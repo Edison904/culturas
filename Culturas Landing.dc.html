@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CULTURAS — Japón y Corea del Sur</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;600;700;800&family=Karla:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    /* Reset base y tipografía global */
+    html, body { margin: 0; padding: 0; background: #0c0b0e; color: #ece7de; font-family: 'Karla', sans-serif; scroll-behavior: smooth; }
+    * { box-sizing: border-box; }
+    a { color: #e5b567; text-decoration: none; }
+    a:hover { color: #f0cd93; }
+    ::selection { background: #b8352b; color: #fff; }
+    @keyframes flotar { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-14px); } }
+    @keyframes pulso { 0%,100% { opacity: .5; } 50% { opacity: 1; } }
+    @keyframes neblina { 0% { transform: translateX(-6%); } 50% { transform: translateX(6%); } 100% { transform: translateX(-6%); } }
+    @keyframes lunaLatido { 0%,100% { opacity: .85; } 50% { opacity: 1; } }
+  </style>
+</helmet>
+
+<!-- ══════════ ESCENARIO DE FONDO: luna, torii sugerido y montañas en capas ══════════ -->
+<div style="position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden;">
+  <!-- Luna / sol naciente -->
+  <div style="position: absolute; top: 8%; right: 12%; width: min(38vw, 460px); aspect-ratio: 1; border-radius: 50%; background: radial-gradient(circle at 42% 38%, rgba(208,69,58,0.55), rgba(126,31,24,0.28) 60%, transparent 72%); filter: blur(2px); animation: lunaLatido 9s ease-in-out infinite;"></div>
+  <div style="position: absolute; top: 8%; right: 12%; width: min(38vw, 460px); aspect-ratio: 1; border-radius: 50%; border: 1px solid rgba(229,181,103,0.18);"></div>
+  <!-- Bandas de neblina -->
+  <div style="position: absolute; bottom: 26%; left: -10%; width: 120%; height: 90px; background: linear-gradient(to right, transparent, rgba(236,231,222,0.05), transparent); filter: blur(14px); animation: neblina 26s ease-in-out infinite;"></div>
+  <div style="position: absolute; bottom: 14%; left: -10%; width: 120%; height: 120px; background: linear-gradient(to right, transparent, rgba(229,181,103,0.05), transparent); filter: blur(18px); animation: neblina 34s ease-in-out infinite reverse;"></div>
+  <!-- Montañas lejanas (capas) -->
+  <div style="position: absolute; bottom: 0; left: -6%; width: 60%; height: 32vh; background: linear-gradient(to top, rgba(24,17,22,0.9), rgba(24,17,22,0.4)); clip-path: polygon(0 100%, 18% 34%, 34% 62%, 52% 12%, 70% 58%, 88% 30%, 100% 100%);"></div>
+  <div style="position: absolute; bottom: 0; right: -8%; width: 70%; height: 26vh; background: linear-gradient(to top, rgba(31,20,20,0.85), rgba(31,20,20,0.3)); clip-path: polygon(0 100%, 14% 48%, 30% 20%, 48% 66%, 64% 26%, 82% 56%, 100% 18%, 100% 100%);"></div>
+  <!-- Torii sugerido con rectángulos simples -->
+  <div style="position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: min(46vw, 420px); height: min(30vw, 300px); opacity: 0.16;">
+    <div style="position: absolute; top: 0; left: -6%; width: 112%; height: 7%; background: #b8352b; border-radius: 3px;"></div>
+    <div style="position: absolute; top: 14%; left: 2%; width: 96%; height: 5%; background: #b8352b;"></div>
+    <div style="position: absolute; top: 4%; bottom: 0; left: 14%; width: 6%; background: #b8352b; transform: rotate(2deg);"></div>
+    <div style="position: absolute; top: 4%; bottom: 0; right: 14%; width: 6%; background: #b8352b; transform: rotate(-2deg);"></div>
+  </div>
+</div>
+
+<!-- ══════════ FONDO ANIMADO (canvas de pétalos, brasas y caligrafía a la deriva) ══════════ -->
+<canvas ref="{{ canvasRef }}" style="position: fixed; inset: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none;"></canvas>
+<!-- Viñeta suave para legibilidad del texto sobre el canvas -->
+<div style="position: fixed; inset: 0; z-index: 1; pointer-events: none; background: radial-gradient(ellipse 80% 60% at 50% 40%, rgba(12,11,14,0) 0%, rgba(12,11,14,0.55) 100%);"></div>
+
+<div style="position: relative; z-index: 2;">
+
+  <!-- ══════════ NAVBAR fija con efecto al hacer scroll ══════════ -->
+  <nav ref="{{ navRef }}" style="position: fixed; top: 0; left: 0; right: 0; z-index: 50; display: flex; align-items: center; justify-content: space-between; padding: 22px 48px; transition: background .4s ease, padding .4s ease, box-shadow .4s ease; background: transparent;">
+    <a href="#inicio" style="display: flex; align-items: baseline; gap: 10px; color: #ece7de;">
+      <span style="font-family: 'Shippori Mincho', serif; font-size: 22px; font-weight: 800; letter-spacing: 0.28em;">CULTURAS</span>
+      <span style="font-size: 11px; letter-spacing: 0.2em; color: #b8352b; font-weight: 600;">日本 · 한국</span>
+    </a>
+    <div style="display: flex; align-items: center; gap: 34px;">
+      <a href="#sobre" style="font-size: 13px; letter-spacing: 0.14em; text-transform: uppercase; color: #b6afa4;" style-hover="color: #ece7de;">Sobre</a>
+      <a href="#experiencias" style="font-size: 13px; letter-spacing: 0.14em; text-transform: uppercase; color: #b6afa4;" style-hover="color: #ece7de;">Experiencias</a>
+      <a href="#paisajes" style="font-size: 13px; letter-spacing: 0.14em; text-transform: uppercase; color: #b6afa4;" style-hover="color: #ece7de;">Paisajes</a>
+      <a href="#paisajes" style="font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase; color: #ece7de; border: 1px solid rgba(229,181,103,0.5); padding: 10px 22px; border-radius: 2px; transition: all .3s ease;" style-hover="background: #b8352b; border-color: #b8352b; color: #fff;">Explorar</a>
+    </div>
+  </nav>
+
+  <!-- ══════════ HERO ══════════ -->
+  <header id="inicio" data-screen-label="Hero" style="min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 140px 24px 80px; position: relative;">
+    <div data-reveal style="display: flex; flex-direction: column; align-items: center; gap: 28px; max-width: 900px;">
+      <div style="display: flex; align-items: center; gap: 14px; color: #e5b567; font-size: 12px; letter-spacing: 0.42em; text-transform: uppercase;">
+        <span style="display: block; width: 40px; height: 1px; background: rgba(229,181,103,0.6);"></span>
+        Dos naciones, un mismo asombro
+        <span style="display: block; width: 40px; height: 1px; background: rgba(229,181,103,0.6);"></span>
+      </div>
+      <h1 style="font-family: 'Shippori Mincho', serif; font-size: clamp(52px, 9vw, 118px); font-weight: 700; line-height: 1.04; margin: 0; letter-spacing: 0.01em; text-wrap: balance;">Japón <span style="color: #b8352b;">·</span> Corea<br><span style="font-weight: 500; font-style: italic; color: #cfc8bb;">del Sur</span></h1>
+      <p style="max-width: 560px; font-size: 17px; font-weight: 300; line-height: 1.8; color: #b6afa4; margin: 0; text-wrap: pretty;">Un recorrido sereno por la estética, los rituales y los paisajes de dos culturas milenarias que dialogan entre la tradición y la vanguardia.</p>
+      <div style="display: flex; gap: 18px; margin-top: 12px; flex-wrap: wrap; justify-content: center;">
+        <a href="#paisajes" style="display: inline-block; background: #b8352b; color: #fff; font-size: 13px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; padding: 18px 42px; border-radius: 2px; transition: all .3s ease; box-shadow: 0 0 0 rgba(184,53,43,0);" style-hover="background: #d0453a; color: #fff; transform: translateY(-3px); box-shadow: 0 14px 40px rgba(184,53,43,0.35);">Paisajes</a>
+        <a href="#sobre" style="display: inline-block; color: #ece7de; font-size: 13px; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; padding: 18px 42px; border: 1px solid rgba(236,231,222,0.25); border-radius: 2px; transition: all .3s ease;" style-hover="border-color: #e5b567; color: #e5b567;">Descubrir</a>
+      </div>
+    </div>
+    <!-- Indicador de scroll -->
+    <div style="position: absolute; bottom: 36px; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: 8px; animation: pulso 2.6s ease-in-out infinite;">
+      <span style="font-size: 10px; letter-spacing: 0.3em; text-transform: uppercase; color: #7d766c;">Desliza</span>
+      <span style="display: block; width: 1px; height: 42px; background: linear-gradient(to bottom, #e5b567, transparent);"></span>
+    </div>
+  </header>
+
+  <!-- ══════════ SOBRE ══════════ -->
+  <section id="sobre" data-screen-label="Sobre" style="max-width: 1100px; margin: 0 auto; padding: 120px 32px; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 64px; align-items: center;">
+    <div data-reveal style="display: flex; flex-direction: column; gap: 22px;">
+      <span style="color: #e5b567; font-size: 12px; letter-spacing: 0.42em; text-transform: uppercase;">Sobre el proyecto</span>
+      <h2 style="font-family: 'Shippori Mincho', serif; font-size: clamp(34px, 4.5vw, 52px); font-weight: 600; line-height: 1.15; margin: 0; text-wrap: balance;">Donde el silencio del templo se encuentra con el pulso de la ciudad</h2>
+      <p style="font-size: 16px; font-weight: 300; line-height: 1.9; color: #b6afa4; margin: 0; text-wrap: pretty;">De los jardines zen de Kioto a los palacios de Seúl, <strong style="color: #ece7de; font-weight: 500;">Culturas</strong> es una invitación a mirar despacio: caligrafía, ceremonia del té, hanbok y kimono, gastronomía y arquitectura que ha aprendido a envejecer con gracia.</p>
+      <div style="display: flex; gap: 40px; margin-top: 8px;">
+        <div style="display: flex; flex-direction: column; gap: 4px;">
+          <span style="font-family: 'Shippori Mincho', serif; font-size: 34px; font-weight: 700; color: #ece7de;">2</span>
+          <span style="font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; color: #7d766c;">Naciones</span>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 4px;">
+          <span style="font-family: 'Shippori Mincho', serif; font-size: 34px; font-weight: 700; color: #ece7de;">+3000</span>
+          <span style="font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; color: #7d766c;">Años de historia</span>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 4px;">
+          <span style="font-family: 'Shippori Mincho', serif; font-size: 34px; font-weight: 700; color: #ece7de;">∞</span>
+          <span style="font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; color: #7d766c;">Matices</span>
+        </div>
+      </div>
+    </div>
+    <!-- Composición decorativa: círculo (enso / sol) + sello -->
+    <div data-reveal style="display: flex; justify-content: center; align-items: center; position: relative; min-height: 360px;">
+      <div style="width: 300px; height: 300px; border-radius: 50%; border: 1px solid rgba(229,181,103,0.35); display: flex; align-items: center; justify-content: center; animation: flotar 7s ease-in-out infinite;">
+        <div style="width: 220px; height: 220px; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #d0453a, #7e1f18 70%); box-shadow: 0 30px 80px rgba(184,53,43,0.35); display: flex; align-items: center; justify-content: center;">
+          <span style="font-family: 'Shippori Mincho', serif; font-size: 64px; color: rgba(255,255,255,0.9);">道</span>
+        </div>
+      </div>
+      <span style="position: absolute; bottom: 24px; right: 10%; font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase; color: #7d766c; writing-mode: vertical-rl;">El camino · 길</span>
+    </div>
+  </section>
+
+  <!-- ══════════ EXPERIENCIAS (tarjetas) ══════════ -->
+  <section id="experiencias" data-screen-label="Experiencias" style="max-width: 1200px; margin: 0 auto; padding: 40px 32px 120px;">
+    <div data-reveal style="display: flex; flex-direction: column; align-items: center; gap: 16px; text-align: center; margin-bottom: 64px;">
+      <span style="color: #e5b567; font-size: 12px; letter-spacing: 0.42em; text-transform: uppercase;">Experiencias</span>
+      <h2 style="font-family: 'Shippori Mincho', serif; font-size: clamp(32px, 4vw, 46px); font-weight: 600; margin: 0; text-wrap: balance;">Cuatro maneras de entrar</h2>
+    </div>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px;">
+      <sc-for list="{{ tarjetas }}" as="t" hint-placeholder-count="4">
+        <div data-reveal style="border: 1px solid rgba(236,231,222,0.1); background: rgba(236,231,222,0.03); border-radius: 4px; padding: 36px 28px; display: flex; flex-direction: column; gap: 16px; transition: all .35s ease; cursor: default;" style-hover="border-color: rgba(229,181,103,0.5); background: rgba(229,181,103,0.05); transform: translateY(-6px);">
+          <span style="font-family: 'Shippori Mincho', serif; font-size: 40px; color: #b8352b; line-height: 1;">{{ t.glifo }}</span>
+          <h3 style="font-family: 'Shippori Mincho', serif; font-size: 21px; font-weight: 600; margin: 0; color: #ece7de;">{{ t.titulo }}</h3>
+          <p style="font-size: 14px; font-weight: 300; line-height: 1.75; color: #b6afa4; margin: 0; text-wrap: pretty;">{{ t.texto }}</p>
+          <span style="font-size: 11px; letter-spacing: 0.24em; text-transform: uppercase; color: #7d766c; margin-top: auto;">{{ t.lugar }}</span>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+
+  <!-- ══════════ CTA — PAISAJES ══════════ -->
+  <section id="paisajes" data-screen-label="CTA Paisajes" data-reveal style="position: relative; overflow: hidden; margin: 0 auto 120px; max-width: 1200px; border-radius: 6px; background: linear-gradient(140deg, #16121a 0%, #241318 55%, #1a0f0d 100%); border: 1px solid rgba(229,181,103,0.2); padding: 96px 32px; display: flex; flex-direction: column; align-items: center; gap: 26px; text-align: center;">
+    <!-- Montañas sugeridas con formas simples -->
+    <div style="position: absolute; bottom: -40px; left: -5%; width: 45%; height: 180px; background: rgba(184,53,43,0.12); clip-path: polygon(0 100%, 50% 0, 100% 100%);"></div>
+    <div style="position: absolute; bottom: -40px; right: -8%; width: 55%; height: 220px; background: rgba(229,181,103,0.08); clip-path: polygon(0 100%, 55% 0, 100% 100%);"></div>
+    <span style="position: relative; color: #e5b567; font-size: 12px; letter-spacing: 0.42em; text-transform: uppercase;">Monte Fuji · Jeju · Hallasan · Nikko</span>
+    <h2 style="position: relative; font-family: 'Shippori Mincho', serif; font-size: clamp(34px, 5vw, 60px); font-weight: 700; margin: 0; max-width: 760px; line-height: 1.15; text-wrap: balance;">Los paisajes que dieron forma a dos culturas</h2>
+    <p style="position: relative; max-width: 540px; font-size: 16px; font-weight: 300; line-height: 1.8; color: #b6afa4; margin: 0; text-wrap: pretty;">Volcanes, islas de piedra y bosques de arce. Una galería curada de los escenarios naturales de Japón y Corea del Sur.</p>
+
+    <!-- Filtro por país -->
+    <div style="position: relative; display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; margin-top: 8px;">
+      <sc-for list="{{ filtros }}" as="f" hint-placeholder-count="3">
+        <button onClick="{{ f.elegir }}" style="font-family: 'Karla', sans-serif; font-size: 12px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; padding: 12px 26px; border-radius: 2px; cursor: pointer; transition: all .3s ease; background: {{ f.fondo }}; color: {{ f.color }}; border: 1px solid {{ f.borde }};" style-hover="border-color: #e5b567;">{{ f.etiqueta }}</button>
+      </sc-for>
+    </div>
+
+    <!-- Galería de paisajes reales (filtrada) -->
+    <div style="position: relative; display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 16px; width: 100%; max-width: 1040px; margin-top: 10px;">
+      <sc-for list="{{ paisajesVisibles }}" as="p" hint-placeholder-count="4">
+        <figure onClick="{{ p.abrir }}" style="margin: 0; position: relative; border-radius: 4px; overflow: hidden; aspect-ratio: 3/4; border: 1px solid rgba(229,181,103,0.2); transition: transform .35s ease, box-shadow .35s ease; cursor: pointer;" style-hover="transform: translateY(-6px); box-shadow: 0 18px 50px rgba(0,0,0,0.5);">
+          {{ p.imagen }}
+          <figcaption style="position: absolute; left: 0; right: 0; bottom: 0; padding: 40px 16px 14px; background: linear-gradient(to top, rgba(12,11,14,0.85), transparent); display: flex; flex-direction: column; gap: 3px; text-align: left;">
+            <span style="font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; color: #ece7de;">{{ p.titulo }} · {{ p.glifo }}</span>
+            <span style="font-size: 11px; letter-spacing: 0.1em; color: #e5b567;">Ver información →</span>
+          </figcaption>
+        </figure>
+      </sc-for>
+    </div>
+
+    <!-- Detalle del paisaje seleccionado (lightbox) -->
+    <sc-if value="{{ haySeleccion }}" hint-placeholder-val="{{ false }}">
+      <div onClick="{{ cerrar }}" style="position: fixed; inset: 0; z-index: 100; background: rgba(12,11,14,0.9); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; padding: 24px;">
+        <div onClick="{{ detener }}" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 0; max-width: 900px; width: 100%; max-height: 86vh; overflow: auto; background: #16121a; border: 1px solid rgba(229,181,103,0.3); border-radius: 6px;">
+          <div style="position: relative; min-height: 340px;">
+            {{ selImagen }}
+          </div>
+          <div style="padding: 40px 36px; display: flex; flex-direction: column; gap: 16px; text-align: left;">
+            <span style="color: #e5b567; font-size: 11px; letter-spacing: 0.36em; text-transform: uppercase;">{{ sel.pais }} · {{ sel.glifo }}</span>
+            <h3 style="font-family: 'Shippori Mincho', serif; font-size: 32px; font-weight: 700; margin: 0; color: #ece7de; line-height: 1.15;">{{ sel.titulo }}</h3>
+            <span style="font-size: 12px; letter-spacing: 0.2em; text-transform: uppercase; color: #7d766c;">📍 {{ sel.ubicacion }}</span>
+            <p style="font-size: 15px; font-weight: 300; line-height: 1.85; color: #b6afa4; margin: 0; text-wrap: pretty;">{{ sel.descripcion }}</p>
+            <span style="font-size: 13px; color: #b6afa4;"><strong style="color: #ece7de; font-weight: 600;">Mejor época:</strong> {{ sel.epoca }}</span>
+            <button onClick="{{ cerrar }}" style="align-self: flex-start; margin-top: 8px; font-family: 'Karla', sans-serif; font-size: 12px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; padding: 12px 28px; background: transparent; color: #ece7de; border: 1px solid rgba(236,231,222,0.3); border-radius: 2px; cursor: pointer; transition: all .3s ease;" style-hover="border-color: #b8352b; color: #b8352b;">Cerrar ✕</button>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+
+    <a href="#inicio" style="position: relative; display: inline-block; background: #e5b567; color: #1a1410; font-size: 13px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; padding: 18px 46px; border-radius: 2px; transition: all .3s ease;" style-hover="background: #f0cd93; color: #1a1410; transform: translateY(-3px); box-shadow: 0 14px 40px rgba(229,181,103,0.3);">Ver paisajes</a>
+  </section>
+
+  <!-- ══════════ FOOTER ══════════ -->
+  <footer style="border-top: 1px solid rgba(236,231,222,0.1); padding: 48px 48px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 20px;">
+    <span style="font-family: 'Shippori Mincho', serif; font-size: 16px; font-weight: 700; letter-spacing: 0.28em; color: #ece7de;">CULTURAS</span>
+    <span style="font-size: 12px; color: #7d766c; letter-spacing: 0.1em;">© 2026 Culturas · Japón y Corea del Sur · Hecho con calma</span>
+    <div style="display: flex; gap: 24px;">
+      <a href="#inicio" style="font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: #b6afa4;" style-hover="color: #e5b567;">Inicio</a>
+      <a href="#sobre" style="font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: #b6afa4;" style-hover="color: #e5b567;">Sobre</a>
+      <a href="#paisajes" style="font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: #b6afa4;" style-hover="color: #e5b567;">Paisajes</a>
+    </div>
+  </footer>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;densidadParticulas&quot;: {&quot;editor&quot;: &quot;range&quot;, &quot;default&quot;: 60, &quot;min&quot;: 15, &quot;max&quot;: 150, &quot;step&quot;: 5, &quot;tsType&quot;: &quot;number&quot;, &quot;section&quot;: &quot;Fondo animado&quot;}, &quot;velocidad&quot;: {&quot;editor&quot;: &quot;range&quot;, &quot;default&quot;: 1, &quot;min&quot;: 0.3, &quot;max&quot;: 3, &quot;step&quot;: 0.1, &quot;tsType&quot;: &quot;number&quot;, &quot;section&quot;: &quot;Fondo animado&quot;}}">
+class Component extends DCLogic {
+  // ─── Refs para el canvas y la navbar ───
+  canvasRef = React.createRef();
+  navRef = React.createRef();
+
+  // ─── Estado de la galería de paisajes ───
+  state = { filtro: "todos", seleccion: null };
+
+  // Datos de los paisajes
+  paisajes = [
+    { img: "uploads/pasted-1783735028853-0.png", titulo: "Monte Fuji", pais: "Japón", clave: "japon", glifo: "日本", ubicacion: "Fujiyoshida, Prefectura de Yamanashi", epoca: "Abril (sakura) y noviembre (cielos despejados)", descripcion: "El volcán sagrado de Japón (3.776 m) visto desde la pagoda Chureito, rodeado de cerezos en flor. Es la postal más icónica del país y lugar de peregrinaje desde hace siglos." },
+    { img: "uploads/pasted-1783735045275-0.png", titulo: "Kiyomizu-dera", pais: "Japón", clave: "japon", glifo: "日本", ubicacion: "Higashiyama, Kioto", epoca: "Primavera y otoño (momiji)", descripcion: "Templo budista fundado en el año 778, Patrimonio de la Humanidad. Su puerta Niōmon bermellón recibe a visitantes en kimono que suben desde las calles históricas de Gion." },
+    { img: "uploads/pasted-1783735145293-0.png", titulo: "Torre Namsan", pais: "Corea del Sur", clave: "corea", glifo: "한국", ubicacion: "Monte Namsan, Seúl", epoca: "Abril, cuando florecen los cerezos", descripcion: "El mirador más querido de Seúl (236 m sobre el monte Namsan). En primavera, los cerezos del parque la enmarcan en rosa; de noche, sus candados del amor brillan sobre la ciudad." },
+    { img: "uploads/pasted-1783735183494-0.png", titulo: "Gyeongbokgung", pais: "Corea del Sur", clave: "corea", glifo: "한국", ubicacion: "Jongno-gu, Seúl", epoca: "Amanecer, todo el año; ceremonia de guardia a las 10:00", descripcion: "El gran palacio de la dinastía Joseon (1395). Su salón del trono Geunjeongjeon, con techos dancheong de madera pintada, se alza frente al monte Bugaksan." },
+  ];
+
+  renderVals() {
+    const { filtro, seleccion } = this.state;
+    const filtros = [
+      { clave: "todos", etiqueta: "Todos" },
+      { clave: "japon", etiqueta: "Japón 日本" },
+      { clave: "corea", etiqueta: "Corea del Sur 한국" },
+    ].map((f) => ({
+      ...f,
+      elegir: () => this.setState({ filtro: f.clave }),
+      fondo: filtro === f.clave ? "#b8352b" : "transparent",
+      color: filtro === f.clave ? "#fff" : "#b6afa4",
+      borde: filtro === f.clave ? "#b8352b" : "rgba(236,231,222,0.25)",
+    }));
+    const paisajesVisibles = this.paisajes
+      .filter((p) => filtro === "todos" || p.clave === filtro)
+      .map((p) => ({
+        ...p,
+        // La imagen se crea aquí para evitar que el navegador pida el src sin resolver
+        imagen: React.createElement("img", { src: p.img, alt: p.titulo, style: { position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" } }),
+        abrir: () => this.setState({ seleccion: p }),
+      }));
+    return {
+      filtros,
+      paisajesVisibles,
+      haySeleccion: !!seleccion,
+      selImagen: seleccion ? React.createElement("img", { src: seleccion.img, alt: seleccion.titulo, style: { position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" } }) : null,
+      sel: seleccion || {},
+      cerrar: () => this.setState({ seleccion: null }),
+      detener: (e) => e.stopPropagation(),
+      canvasRef: this.canvasRef,
+      navRef: this.navRef,
+      // Tarjetas de experiencias
+      tarjetas: [
+        { glifo: "茶", titulo: "Ritual y ceremonia", texto: "La ceremonia del té japonesa y el darye coreano: dos liturgias del tiempo lento donde cada gesto tiene siglos de intención.", lugar: "Kioto · Insadong" },
+        { glifo: "味", titulo: "Gastronomía", texto: "Del kaiseki estacional al banquete real hanjeongsik. Fermentos, temporada y una obsesión compartida por el detalle.", lugar: "Osaka · Jeonju" },
+        { glifo: "衣", titulo: "Kimono y hanbok", texto: "Dos siluetas nacionales que siguen vivas: seda, lino y color como lenguaje de identidad, estación y ocasión.", lugar: "Gion · Bukchon" },
+        { glifo: "山", titulo: "Naturaleza sagrada", texto: "Montañas veneradas, bosques de bambú y caminos de peregrinaje donde el paisaje es también templo.", lugar: "Fuji · Hallasan" },
+      ],
+    };
+  }
+
+  componentDidMount() {
+    this.iniciarFondo();
+    this.iniciarNavbar();
+    this.iniciarRevelado();
+  }
+
+  componentWillUnmount() {
+    cancelAnimationFrame(this.raf);
+    window.removeEventListener("resize", this.onResize);
+    window.removeEventListener("scroll", this.onScroll);
+    window.removeEventListener("mousemove", this.onMouse);
+    if (this.observer) this.observer.disconnect();
+  }
+
+  // ─── Fondo animado: pétalos y brasas a la deriva ───
+  iniciarFondo() {
+    const canvas = this.canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    const densidad = this.props.densidadParticulas ?? 60;
+    const velocidad = this.props.velocidad ?? 1;
+    let W, H;
+    const mouse = { x: -9999, y: -9999 };
+
+    const redim = () => {
+      W = canvas.width = window.innerWidth;
+      H = canvas.height = window.innerHeight;
+    };
+    this.onResize = redim;
+    redim();
+    window.addEventListener("resize", redim);
+
+    this.onMouse = (e) => { mouse.x = e.clientX; mouse.y = e.clientY; };
+    window.addEventListener("mousemove", this.onMouse);
+
+    // Cada partícula es un pétalo (rojo) o una brasa dorada
+    // Caligrafía flotante: caracteres japoneses y coreanos muy tenues
+    const glifos = ["桜", "月", "山", "道", "花", "한", "달", "산", "길", "꽃"];
+    const parts = [];
+    for (let i = 0; i < densidad; i++) {
+      const azar = Math.random();
+      const dorada = azar < 0.3;
+      const glifo = azar > 0.88 ? glifos[Math.floor(Math.random() * glifos.length)] : null;
+      parts.push({
+        glifo,
+        tam: 18 + Math.random() * 30,
+        x: Math.random() * window.innerWidth,
+        y: Math.random() * window.innerHeight,
+        r: dorada ? 1 + Math.random() * 1.8 : 2.5 + Math.random() * 4,
+        vx: (Math.random() - 0.5) * 0.35,
+        vy: 0.15 + Math.random() * 0.45,
+        rot: Math.random() * Math.PI * 2,
+        vr: (Math.random() - 0.5) * 0.02,
+        fase: Math.random() * Math.PI * 2,
+        dorada,
+        alpha: 0.25 + Math.random() * 0.45,
+      });
+    }
+
+    const dibujar = (t) => {
+      ctx.clearRect(0, 0, W, H);
+      for (const p of parts) {
+        // Vaivén suave + deriva descendente
+        p.fase += 0.008 * velocidad;
+        p.x += (p.vx + Math.sin(p.fase) * 0.3) * velocidad;
+        p.y += p.vy * velocidad;
+        p.rot += p.vr * velocidad;
+
+        // Repulsión sutil del mouse
+        const dx = p.x - mouse.x, dy = p.y - mouse.y;
+        const d2 = dx * dx + dy * dy;
+        if (d2 < 14400) { // radio 120px
+          const d = Math.sqrt(d2) || 1;
+          p.x += (dx / d) * 0.8;
+          p.y += (dy / d) * 0.8;
+        }
+
+        // Reaparecer arriba al salir
+        if (p.y > H + 20) { p.y = -20; p.x = Math.random() * W; }
+        if (p.x > W + 20) p.x = -20;
+        if (p.x < -20) p.x = W + 20;
+
+        ctx.save();
+        ctx.translate(p.x, p.y);
+        ctx.rotate(p.glifo ? Math.sin(p.fase) * 0.15 : p.rot); // los glifos solo oscilan
+        ctx.globalAlpha = p.alpha * (0.75 + 0.25 * Math.sin(p.fase * 2));
+        if (p.glifo) {
+          // Carácter caligráfico flotando muy tenue
+          ctx.globalAlpha *= 0.35;
+          ctx.fillStyle = "#e5b567";
+          ctx.font = p.tam + "px 'Shippori Mincho', serif";
+          ctx.textAlign = "center";
+          ctx.textBaseline = "middle";
+          ctx.fillText(p.glifo, 0, 0);
+        } else if (p.dorada) {
+          // Brasa dorada: punto luminoso
+          ctx.fillStyle = "#e5b567";
+          ctx.beginPath();
+          ctx.arc(0, 0, p.r, 0, Math.PI * 2);
+          ctx.fill();
+        } else {
+          // Pétalo: elipse carmesí
+          ctx.fillStyle = "#b8352b";
+          ctx.beginPath();
+          ctx.ellipse(0, 0, p.r, p.r * 0.55, 0, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        ctx.restore();
+      }
+      this.raf = requestAnimationFrame(dibujar);
+    };
+    this.raf = requestAnimationFrame(dibujar);
+  }
+
+  // ─── Navbar: fondo sólido al hacer scroll ───
+  iniciarNavbar() {
+    this.onScroll = () => {
+      const nav = this.navRef.current;
+      if (!nav) return;
+      if (window.scrollY > 40) {
+        nav.style.background = "rgba(12,11,14,0.88)";
+        nav.style.backdropFilter = "blur(12px)";
+        nav.style.padding = "14px 48px";
+        nav.style.boxShadow = "0 8px 30px rgba(0,0,0,0.4)";
+      } else {
+        nav.style.background = "transparent";
+        nav.style.backdropFilter = "none";
+        nav.style.padding = "22px 48px";
+        nav.style.boxShadow = "none";
+      }
+    };
+    window.addEventListener("scroll", this.onScroll, { passive: true });
+  }
+
+  // ─── Aparición al hacer scroll (IntersectionObserver) ───
+  iniciarRevelado() {
+    const els = document.querySelectorAll("[data-reveal]");
+    els.forEach((el) => {
+      el.style.opacity = "0";
+      el.style.transform = "translateY(28px)";
+      el.style.transition = "opacity .9s ease, transform .9s cubic-bezier(.22,.8,.3,1)";
+    });
+    this.observer = new IntersectionObserver((entradas) => {
+      entradas.forEach((en) => {
+        if (en.isIntersecting) {
+          en.target.style.opacity = "1";
+          en.target.style.transform = "translateY(0)";
+          this.observer.unobserve(en.target);
+        }
+      });
+    }, { threshold: 0.15 });
+    els.forEach((el) => this.observer.observe(el));
+  }
+}
+</script>
+</body>
+</html>
