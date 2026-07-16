@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CULTURAS — Japón · Corea · Chile</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;600;700;800&family=Karla:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    /* Reset base y tipografía global */
+    html, body { margin: 0; padding: 0; background: #0c0b0e; color: #ece7de; font-family: 'Karla', sans-serif; scroll-behavior: smooth; }
+    * { box-sizing: border-box; }
+    a { color: #e5b567; text-decoration: none; }
+    a:hover { color: #f0cd93; }
+    ::selection { background: #b8352b; color: #fff; }
+    @keyframes flotar { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-14px); } }
+    @keyframes pulso { 0%,100% { opacity: .5; } 50% { opacity: 1; } }
+    @keyframes neblina { 0% { transform: translateX(-6%); } 50% { transform: translateX(6%); } 100% { transform: translateX(-6%); } }
+    @keyframes lunaLatido { 0%,100% { opacity: .85; } 50% { opacity: 1; } }
+    @keyframes aparecer { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+  </style>
+</helmet>
+
+<!-- ══════════ ESCENARIOS DE FONDO por país ══════════ -->
+<div style="position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; transition: background 1s ease; background: {{ cieloFondo }};">
+
+  <!-- INICIO: luna carmesí + torii + montañas -->
+  <sc-if value="{{ esInicio }}" hint-placeholder-val="{{ true }}">
+    <div style="position: absolute; top: 8%; right: 12%; width: min(38vw, 460px); aspect-ratio: 1; border-radius: 50%; background: radial-gradient(circle at 42% 38%, rgba(208,69,58,0.55), rgba(126,31,24,0.28) 60%, transparent 72%); filter: blur(2px); animation: lunaLatido 9s ease-in-out infinite;"></div>
+    <div style="position: absolute; bottom: 0; left: -6%; width: 60%; height: 32vh; background: linear-gradient(to top, rgba(24,17,22,0.9), rgba(24,17,22,0.4)); clip-path: polygon(0 100%, 18% 34%, 34% 62%, 52% 12%, 70% 58%, 88% 30%, 100% 100%);"></div>
+    <div style="position: absolute; bottom: 0; right: -8%; width: 70%; height: 26vh; background: linear-gradient(to top, rgba(31,20,20,0.85), rgba(31,20,20,0.3)); clip-path: polygon(0 100%, 14% 48%, 30% 20%, 48% 66%, 64% 26%, 82% 56%, 100% 18%, 100% 100%);"></div>
+    <div style="position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: min(46vw, 420px); height: min(30vw, 300px); opacity: 0.16;">
+      <div style="position: absolute; top: 0; left: -6%; width: 112%; height: 7%; background: #b8352b; border-radius: 3px;"></div>
+      <div style="position: absolute; top: 14%; left: 2%; width: 96%; height: 5%; background: #b8352b;"></div>
+      <div style="position: absolute; top: 4%; bottom: 0; left: 14%; width: 6%; background: #b8352b; transform: rotate(2deg);"></div>
+      <div style="position: absolute; top: 4%; bottom: 0; right: 14%; width: 6%; background: #b8352b; transform: rotate(-2deg);"></div>
+    </div>
+  </sc-if>
+
+  <!-- JAPÓN: Monte Fuji con nieve + luna rosada -->
+  <sc-if value="{{ esJapon }}" hint-placeholder-val="{{ false }}">
+    <div style="position: absolute; top: 10%; left: 12%; width: min(30vw, 340px); aspect-ratio: 1; border-radius: 50%; background: radial-gradient(circle at 40% 35%, rgba(242,160,181,0.4), rgba(184,53,43,0.18) 60%, transparent 72%); filter: blur(2px); animation: lunaLatido 8s ease-in-out infinite;"></div>
+    <!-- Cuerpo del volcán -->
+    <div style="position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 140vw; height: 44vh; background: linear-gradient(to top, rgba(26,18,26,0.95), rgba(40,26,38,0.55)); clip-path: polygon(0 100%, 38% 12%, 44% 4%, 50% 0, 56% 4%, 62% 12%, 100% 100%);"></div>
+    <!-- Nieve de la cima -->
+    <div style="position: absolute; bottom: 30vh; left: 50%; transform: translateX(-50%); width: 140vw; height: 14vh; background: rgba(236,231,222,0.5); filter: blur(1px); clip-path: polygon(38% 58%, 44% 18%, 50% 0, 56% 18%, 62% 58%, 58% 48%, 55% 66%, 50% 42%, 46% 68%, 42% 50%);"></div>
+    <div style="position: absolute; bottom: 18%; left: -10%; width: 120%; height: 80px; background: linear-gradient(to right, transparent, rgba(236,231,222,0.07), transparent); filter: blur(14px); animation: neblina 24s ease-in-out infinite;"></div>
+  </sc-if>
+
+  <!-- COREA: luna llena dorada + colinas + techo de palacio -->
+  <sc-if value="{{ esCorea }}" hint-placeholder-val="{{ false }}">
+    <div style="position: absolute; top: 7%; right: 16%; width: min(30vw, 320px); aspect-ratio: 1; border-radius: 50%; background: radial-gradient(circle at 42% 38%, rgba(229,181,103,0.5), rgba(229,181,103,0.15) 62%, transparent 74%); filter: blur(2px); animation: lunaLatido 9s ease-in-out infinite;"></div>
+    <div style="position: absolute; bottom: 0; left: -10%; width: 75%; height: 30vh; background: linear-gradient(to top, rgba(18,22,26,0.92), rgba(18,22,26,0.4)); clip-path: polygon(0 100%, 20% 30%, 42% 64%, 62% 14%, 84% 58%, 100% 36%, 100% 100%);"></div>
+    <!-- Techo curvo de palacio (giwa) sugerido -->
+    <div style="position: absolute; bottom: 0; right: 6%; width: min(48vw, 460px); height: min(24vw, 220px); opacity: 0.28;">
+      <div style="position: absolute; top: 0; left: 0; width: 100%; height: 34%; background: #2c3e46; clip-path: polygon(0 100%, 8% 30%, 50% 0, 92% 30%, 100% 100%, 78% 72%, 50% 62%, 22% 72%);"></div>
+      <div style="position: absolute; top: 40%; left: 12%; width: 76%; height: 26%; background: #b8352b; clip-path: polygon(0 100%, 6% 20%, 50% 0, 94% 20%, 100% 100%, 74% 68%, 50% 60%, 26% 68%);"></div>
+      <div style="position: absolute; top: 72%; bottom: 0; left: 24%; width: 4%; background: #6e2a22;"></div>
+      <div style="position: absolute; top: 72%; bottom: 0; right: 24%; width: 4%; background: #6e2a22;"></div>
+    </div>
+  </sc-if>
+
+  <!-- CHILE: Torres del Paine + cielo austral -->
+  <sc-if value="{{ esChile }}" hint-placeholder-val="{{ false }}">
+    <div style="position: absolute; top: 9%; left: 14%; width: min(26vw, 280px); aspect-ratio: 1; border-radius: 50%; background: radial-gradient(circle at 42% 38%, rgba(168,206,226,0.35), rgba(120,160,190,0.12) 62%, transparent 74%); filter: blur(2px); animation: lunaLatido 10s ease-in-out infinite;"></div>
+    <!-- Macizo lejano -->
+    <div style="position: absolute; bottom: 0; left: -8%; width: 116%; height: 26vh; background: linear-gradient(to top, rgba(16,20,28,0.9), rgba(16,20,28,0.35)); clip-path: polygon(0 100%, 12% 46%, 26% 70%, 40% 30%, 55% 62%, 72% 40%, 88% 66%, 100% 44%, 100% 100%);"></div>
+    <!-- Las tres torres de granito -->
+    <div style="position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: min(70vw, 720px); height: 46vh; background: linear-gradient(to top, rgba(30,34,44,0.95), rgba(52,58,74,0.6)); clip-path: polygon(0 100%, 16% 78%, 26% 26%, 30% 60%, 36% 70%, 44% 6%, 50% 52%, 56% 64%, 64% 0, 70% 58%, 78% 74%, 100% 100%);"></div>
+    <!-- Nieve en las cumbres -->
+    <div style="position: absolute; bottom: 30vh; left: 50%; transform: translateX(-50%); width: min(70vw, 720px); height: 12vh; background: rgba(226,234,242,0.35); filter: blur(1px); clip-path: polygon(24% 80%, 26% 20%, 29% 74%, 42% 90%, 44% 4%, 47% 78%, 62% 86%, 64% 0, 67% 72%);"></div>
+    <div style="position: absolute; bottom: 12%; left: -10%; width: 120%; height: 90px; background: linear-gradient(to right, transparent, rgba(168,206,226,0.06), transparent); filter: blur(16px); animation: neblina 20s ease-in-out infinite;"></div>
+  </sc-if>
+</div>
+
+<!-- ══════════ CANVAS: partículas según el país ══════════ -->
+<canvas ref="{{ canvasRef }}" style="position: fixed; inset: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none;"></canvas>
+<div style="position: fixed; inset: 0; z-index: 2; pointer-events: none; background: radial-gradient(ellipse 80% 60% at 50% 40%, rgba(12,11,14,0) 0%, rgba(12,11,14,0.5) 100%);"></div>
+
+<div style="position: relative; z-index: 3;">
+
+  <!-- ══════════ NAVBAR con pestañas de país ══════════ -->
+  <nav ref="{{ navRef }}" style="position: fixed; top: 0; left: 0; right: 0; z-index: 50; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; padding: 18px 40px; transition: background .4s ease, padding .4s ease, box-shadow .4s ease; background: transparent;">
+    <div style="display: flex; align-items: baseline; gap: 10px;">
+      <span style="font-family: 'Shippori Mincho', serif; font-size: 21px; font-weight: 800; letter-spacing: 0.28em; color: #ece7de;">CULTURAS</span>
+      <span style="font-size: 11px; letter-spacing: 0.18em; color: #b8352b; font-weight: 600;">日本 · 한국 · CL</span>
+    </div>
+    <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+      <sc-for list="{{ pestanas }}" as="tab" hint-placeholder-count="4">
+        <button onClick="{{ tab.elegir }}" style="font-family: 'Karla', sans-serif; font-size: 12px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; padding: 11px 22px; border-radius: 2px; cursor: pointer; transition: all .3s ease; background: {{ tab.fondo }}; color: {{ tab.color }}; border: 1px solid {{ tab.borde }};" style-hover="border-color: #e5b567;">{{ tab.etiqueta }}</button>
+      </sc-for>
+    </div>
+  </nav>
+
+  <!-- ══════════ PESTAÑA INICIO ══════════ -->
+  <sc-if value="{{ esInicio }}" hint-placeholder-val="{{ true }}">
+    <header data-screen-label="Inicio" style="min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 150px 24px 80px; animation: aparecer .8s ease both;">
+      <div style="display: flex; flex-direction: column; align-items: center; gap: 28px; max-width: 940px;">
+        <div style="display: flex; align-items: center; gap: 14px; color: #e5b567; font-size: 12px; letter-spacing: 0.42em; text-transform: uppercase;">
+          <span style="display: block; width: 40px; height: 1px; background: rgba(229,181,103,0.6);"></span>
+          Un viaje por las culturas del mundo
+          <span style="display: block; width: 40px; height: 1px; background: rgba(229,181,103,0.6);"></span>
+        </div>
+        <h1 style="font-family: 'Shippori Mincho', serif; font-size: clamp(48px, 8.5vw, 110px); font-weight: 700; line-height: 1.05; margin: 0; text-wrap: balance;">Japón <span style="color: #b8352b;">·</span> Corea <span style="color: #b8352b;">·</span> Chile</h1>
+        <p style="max-width: 580px; font-size: 17px; font-weight: 300; line-height: 1.8; color: #b6afa4; margin: 0; text-wrap: pretty;">Tres naciones, tres paisajes, tres maneras de entender el mundo. Elige un país y sumérgete en su cultura, su comida y sus escenarios naturales.</p>
+        <!-- Tarjetas de acceso a cada país -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 18px; width: 100%; max-width: 860px; margin-top: 18px;">
+          <sc-for list="{{ accesos }}" as="ac" hint-placeholder-count="3">
+            <div onClick="{{ ac.elegir }}" style="border: 1px solid rgba(236,231,222,0.12); background: rgba(236,231,222,0.03); border-radius: 4px; padding: 34px 24px; display: flex; flex-direction: column; align-items: center; gap: 12px; cursor: pointer; transition: all .35s ease;" style-hover="border-color: rgba(229,181,103,0.55); background: rgba(229,181,103,0.06); transform: translateY(-6px);">
+              <span style="font-family: 'Shippori Mincho', serif; font-size: 44px; line-height: 1; color: #b8352b;">{{ ac.glifo }}</span>
+              <span style="font-family: 'Shippori Mincho', serif; font-size: 22px; font-weight: 700; color: #ece7de;">{{ ac.nombre }}</span>
+              <span style="font-size: 13px; font-weight: 300; color: #b6afa4; line-height: 1.6;">{{ ac.lema }}</span>
+              <span style="font-size: 11px; letter-spacing: 0.24em; text-transform: uppercase; color: #e5b567; margin-top: 6px;">Explorar →</span>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </header>
+  </sc-if>
+
+  <!-- ══════════ PESTAÑA DE PAÍS (contenido según selección) ══════════ -->
+  <sc-if value="{{ esPais }}" hint-placeholder-val="{{ false }}">
+    <main data-screen-label="País" style="animation: aparecer .8s ease both;">
+
+      <!-- Hero del país -->
+      <header style="position: relative; min-height: 88vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 150px 24px 60px;">
+        <div style="display: flex; flex-direction: column; align-items: center; gap: 22px; max-width: 860px;">
+          <span style="font-family: 'Shippori Mincho', serif; font-size: 60px; line-height: 1; color: {{ p.acento }};">{{ p.glifo }}</span>
+          <h1 style="font-family: 'Shippori Mincho', serif; font-size: clamp(46px, 8vw, 100px); font-weight: 700; line-height: 1.05; margin: 0; text-wrap: balance;">{{ p.nombre }}</h1>
+          <span style="color: #e5b567; font-size: 12px; letter-spacing: 0.42em; text-transform: uppercase;">{{ p.lema }}</span>
+          <p style="max-width: 580px; font-size: 17px; font-weight: 300; line-height: 1.8; color: #b6afa4; margin: 0; text-wrap: pretty;">{{ p.intro }}</p>
+        </div>
+        <div style="position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: 8px; animation: pulso 2.6s ease-in-out infinite;">
+          <span style="font-size: 10px; letter-spacing: 0.3em; text-transform: uppercase; color: #7d766c;">Desliza</span>
+          <span style="display: block; width: 1px; height: 42px; background: linear-gradient(to bottom, #e5b567, transparent);"></span>
+        </div>
+      </header>
+
+      <!-- Cultura -->
+      <section style="max-width: 1000px; margin: 0 auto; padding: 60px 32px; display: flex; flex-direction: column; gap: 22px; text-align: center; align-items: center;">
+        <span style="color: #e5b567; font-size: 12px; letter-spacing: 0.42em; text-transform: uppercase;">Cultura</span>
+        <h2 style="font-family: 'Shippori Mincho', serif; font-size: clamp(30px, 4vw, 44px); font-weight: 600; margin: 0; text-wrap: balance;">{{ p.culturaTitulo }}</h2>
+        <p style="max-width: 640px; font-size: 16px; font-weight: 300; line-height: 1.9; color: #b6afa4; margin: 0; text-wrap: pretty;">{{ p.culturaTexto }}</p>
+      </section>
+
+      <!-- Comida -->
+      <section style="max-width: 1100px; margin: 0 auto; padding: 40px 32px 80px;">
+        <div style="display: flex; flex-direction: column; align-items: center; gap: 14px; text-align: center; margin-bottom: 44px;">
+          <span style="color: #e5b567; font-size: 12px; letter-spacing: 0.42em; text-transform: uppercase;">Gastronomía</span>
+          <h2 style="font-family: 'Shippori Mincho', serif; font-size: clamp(28px, 3.5vw, 40px); font-weight: 600; margin: 0;">Sabores de {{ p.nombre }}</h2>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 18px;">
+          <sc-for list="{{ p.comidas }}" as="c" hint-placeholder-count="3">
+            <div style="border: 1px solid rgba(236,231,222,0.1); background: rgba(236,231,222,0.03); border-radius: 4px; padding: 32px 26px; display: flex; flex-direction: column; gap: 12px; transition: all .35s ease;" style-hover="border-color: rgba(229,181,103,0.5); background: rgba(229,181,103,0.05); transform: translateY(-6px);">
+              <span style="font-family: 'Shippori Mincho', serif; font-size: 34px; line-height: 1; color: {{ p.acento }};">{{ c.glifo }}</span>
+              <h3 style="font-family: 'Shippori Mincho', serif; font-size: 20px; font-weight: 600; margin: 0; color: #ece7de;">{{ c.nombre }}</h3>
+              <p style="font-size: 14px; font-weight: 300; line-height: 1.75; color: #b6afa4; margin: 0; text-wrap: pretty;">{{ c.texto }}</p>
+            </div>
+          </sc-for>
+        </div>
+      </section>
+
+      <!-- Paisajes -->
+      <section style="max-width: 1100px; margin: 0 auto; padding: 0 32px 120px; display: flex; flex-direction: column; align-items: center; gap: 26px; text-align: center;">
+        <span style="color: #e5b567; font-size: 12px; letter-spacing: 0.42em; text-transform: uppercase;">Paisajes</span>
+        <h2 style="font-family: 'Shippori Mincho', serif; font-size: clamp(28px, 3.5vw, 40px); font-weight: 600; margin: 0; text-wrap: balance;">{{ p.paisajesTitulo }}</h2>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; width: 100%;">
+          <sc-for list="{{ p.paisajes }}" as="pj" hint-placeholder-count="2">
+            <figure onClick="{{ pj.abrir }}" style="margin: 0; position: relative; border-radius: 4px; overflow: hidden; aspect-ratio: 3/4; border: 1px solid rgba(229,181,103,0.2); transition: transform .35s ease, box-shadow .35s ease; cursor: pointer; background: rgba(236,231,222,0.04);" style-hover="transform: translateY(-6px); box-shadow: 0 18px 50px rgba(0,0,0,0.5);">
+              {{ pj.imagen }}
+              <figcaption style="position: absolute; left: 0; right: 0; bottom: 0; padding: 40px 16px 14px; background: linear-gradient(to top, rgba(12,11,14,0.85), transparent); display: flex; flex-direction: column; gap: 3px; text-align: left;">
+                <span style="font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; color: #ece7de;">{{ pj.titulo }}</span>
+                <span style="font-size: 11px; letter-spacing: 0.1em; color: #e5b567;">Ver información →</span>
+              </figcaption>
+            </figure>
+          </sc-for>
+        </div>
+      </section>
+    </main>
+  </sc-if>
+
+  <!-- ══════════ LIGHTBOX de paisaje ══════════ -->
+  <sc-if value="{{ haySeleccion }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ cerrar }}" style="position: fixed; inset: 0; z-index: 100; background: rgba(12,11,14,0.9); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; padding: 24px;">
+      <div onClick="{{ detener }}" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 0; max-width: 900px; width: 100%; max-height: 86vh; overflow: auto; background: #16121a; border: 1px solid rgba(229,181,103,0.3); border-radius: 6px;">
+        <div style="position: relative; min-height: 340px; background: repeating-linear-gradient(45deg, rgba(236,231,222,0.03), rgba(236,231,222,0.03) 12px, rgba(236,231,222,0.06) 12px, rgba(236,231,222,0.06) 24px);">
+          {{ selImagen }}
+        </div>
+        <div style="padding: 40px 36px; display: flex; flex-direction: column; gap: 16px; text-align: left;">
+          <span style="color: #e5b567; font-size: 11px; letter-spacing: 0.36em; text-transform: uppercase;">{{ sel.pais }} · {{ sel.glifo }}</span>
+          <h3 style="font-family: 'Shippori Mincho', serif; font-size: 32px; font-weight: 700; margin: 0; color: #ece7de; line-height: 1.15;">{{ sel.titulo }}</h3>
+          <span style="font-size: 12px; letter-spacing: 0.2em; text-transform: uppercase; color: #7d766c;">📍 {{ sel.ubicacion }}</span>
+          <p style="font-size: 15px; font-weight: 300; line-height: 1.85; color: #b6afa4; margin: 0; text-wrap: pretty;">{{ sel.descripcion }}</p>
+          <span style="font-size: 13px; color: #b6afa4;"><strong style="color: #ece7de; font-weight: 600;">Mejor época:</strong> {{ sel.epoca }}</span>
+          <button onClick="{{ cerrar }}" style="align-self: flex-start; margin-top: 8px; font-family: 'Karla', sans-serif; font-size: 12px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; padding: 12px 28px; background: transparent; color: #ece7de; border: 1px solid rgba(236,231,222,0.3); border-radius: 2px; cursor: pointer; transition: all .3s ease;" style-hover="border-color: #b8352b; color: #b8352b;">Cerrar ✕</button>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- ══════════ FOOTER ══════════ -->
+  <footer style="border-top: 1px solid rgba(236,231,222,0.1); padding: 44px 48px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 20px;">
+    <span style="font-family: 'Shippori Mincho', serif; font-size: 16px; font-weight: 700; letter-spacing: 0.28em; color: #ece7de;">CULTURAS</span>
+    <span style="font-size: 12px; color: #7d766c; letter-spacing: 0.1em;">© 2026 Culturas · Japón · Corea del Sur · Chile · Hecho con calma</span>
+  </footer>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;densidadParticulas&quot;: {&quot;editor&quot;: &quot;range&quot;, &quot;default&quot;: 60, &quot;min&quot;: 15, &quot;max&quot;: 150, &quot;step&quot;: 5, &quot;tsType&quot;: &quot;number&quot;, &quot;section&quot;: &quot;Fondo animado&quot;}, &quot;velocidad&quot;: {&quot;editor&quot;: &quot;range&quot;, &quot;default&quot;: 1, &quot;min&quot;: 0.3, &quot;max&quot;: 3, &quot;step&quot;: 0.1, &quot;tsType&quot;: &quot;number&quot;, &quot;section&quot;: &quot;Fondo animado&quot;}}">
+class Component extends DCLogic {
+  canvasRef = React.createRef();
+  navRef = React.createRef();
+
+  // ─── Estado: pestaña activa y paisaje seleccionado ───
+  state = { pais: "inicio", seleccion: null };
+
+  // ─── Datos de cada país (fácil de extender: agrega uno más aquí y en pestañas) ───
+  paises = {
+    japon: {
+      nombre: "Japón", glifo: "日本", acento: "#b8352b",
+      lema: "La belleza de lo efímero",
+      intro: "Del silencio de los jardines zen al neón de Tokio: una cultura que encontró la perfección en el detalle y la calma en lo pasajero.",
+      culturaTitulo: "Wabi-sabi: la elegancia de lo imperfecto",
+      culturaTexto: "La ceremonia del té, la caligrafía shodō, el kimono y el hanami — contemplar los cerezos en flor — comparten una misma raíz: aceptar el paso del tiempo como parte de la belleza. Japón cultiva rituales donde cada gesto tiene siglos de intención.",
+      comidas: [
+        { glifo: "鮨", nombre: "Sushi y sashimi", texto: "El arte de lo crudo: arroz avinagrado, pescado de temporada y décadas de disciplina detrás de cada corte." },
+        { glifo: "麺", nombre: "Ramen", texto: "Caldo cocido por horas, fideos al dente y un huevo marinado: la comida reconfortante que define a cada región." },
+        { glifo: "膳", nombre: "Kaiseki", texto: "La alta cocina estacional de Kioto: pequeños platos que celebran el ingrediente exacto en su momento exacto." },
+      ],
+      paisajesTitulo: "Del volcán sagrado a los templos de Kioto",
+      paisajes: [
+        { img: "uploads/pasted-1783735028853-0.png", titulo: "Monte Fuji", pais: "Japón", glifo: "日本", ubicacion: "Fujiyoshida, Prefectura de Yamanashi", epoca: "Abril (sakura) y noviembre (cielos despejados)", descripcion: "El volcán sagrado de Japón (3.776 m) visto desde la pagoda Chureito, rodeado de cerezos en flor. Es la postal más icónica del país y lugar de peregrinaje desde hace siglos." },
+        { img: "uploads/pasted-1783735045275-0.png", titulo: "Kiyomizu-dera", pais: "Japón", glifo: "日本", ubicacion: "Higashiyama, Kioto", epoca: "Primavera y otoño (momiji)", descripcion: "Templo budista fundado en el año 778, Patrimonio de la Humanidad. Su puerta Niōmon bermellón recibe a visitantes en kimono que suben desde las calles históricas de Gion." },
+      ],
+    },
+    corea: {
+      nombre: "Corea del Sur", glifo: "한국", acento: "#e5b567",
+      lema: "Tradición que late en presente",
+      intro: "Palacios de la dinastía Joseon junto a rascacielos, hanbok junto al K-pop: Corea vive su historia sin dejar de inventar el futuro.",
+      culturaTitulo: "Jeong: el lazo que lo une todo",
+      culturaTexto: "El hanbok de seda, la caligrafía hangul, el darye (ceremonia del té) y la música tradicional pansori conviven con la cultura pop más influyente de Asia. En el centro está el jeong: ese afecto profundo y difícil de traducir que une a las personas.",
+      comidas: [
+        { glifo: "菜", nombre: "Kimchi", texto: "Col fermentada con gochugaru: el alma de la mesa coreana, presente en cada comida desde hace más de mil años." },
+        { glifo: "飯", nombre: "Bibimbap", texto: "Arroz, vegetales, huevo y gochujang mezclados en un cuenco caliente: equilibrio y color en un solo plato." },
+        { glifo: "宴", nombre: "Hanjeongsik", texto: "El banquete real: decenas de banchan que convierten la mesa en un paisaje de sabores compartidos." },
+      ],
+      paisajesTitulo: "De la torre de Seúl al palacio real",
+      paisajes: [
+        { img: "uploads/pasted-1783735145293-0.png", titulo: "Torre Namsan", pais: "Corea del Sur", glifo: "한국", ubicacion: "Monte Namsan, Seúl", epoca: "Abril, cuando florecen los cerezos", descripcion: "El mirador más querido de Seúl (236 m sobre el monte Namsan). En primavera, los cerezos del parque la enmarcan en rosa; de noche, sus candados del amor brillan sobre la ciudad." },
+        { img: "uploads/pasted-1783735183494-0.png", titulo: "Gyeongbokgung", pais: "Corea del Sur", glifo: "한국", ubicacion: "Jongno-gu, Seúl", epoca: "Amanecer, todo el año; ceremonia de guardia a las 10:00", descripcion: "El gran palacio de la dinastía Joseon (1395). Su salón del trono Geunjeongjeon, con techos dancheong de madera pintada, se alza frente al monte Bugaksan." },
+      ],
+    },
+    chile: {
+      nombre: "Chile", glifo: "CL", acento: "#7ea8c4",
+      lema: "Del desierto al fin del mundo",
+      intro: "Un país largo y angosto que guarda el desierto más árido del planeta, viñedos infinitos y las torres de granito más famosas de la Patagonia.",
+      culturaTitulo: "La tierra de poetas y de fuego",
+      culturaTexto: "Neruda y Mistral, la cueca y el folclor andino, la herencia mapuche y las tradiciones del campo: la cultura chilena nace del encuentro entre la cordillera y el mar, entre pueblos originarios y el mundo criollo.",
+      comidas: [
+        { glifo: "E", nombre: "Empanada de pino", texto: "Masa dorada al horno rellena de carne, cebolla, huevo y aceituna: el sabor de todo 18 de septiembre." },
+        { glifo: "A", nombre: "Asado y curanto", texto: "Del asado patagónico al curanto chilote cocido bajo tierra: el fuego como rito de encuentro." },
+        { glifo: "V", nombre: "Vino de los valles", texto: "Carmenere rescatado del olvido y valles como Colchagua o Maipo entre los mejores del mundo vitivinícola." },
+      ],
+      paisajesTitulo: "Torres del Paine y los extremos del sur",
+      paisajes: [
+        { img: null, titulo: "Torres del Paine", pais: "Chile", glifo: "CL", ubicacion: "Región de Magallanes, Patagonia", epoca: "Noviembre a marzo (verano austral)", descripcion: "Tres torres de granito de casi 3.000 m esculpidas por glaciares, corazón del parque nacional más famoso de la Patagonia y Reserva de la Biosfera de la UNESCO." },
+        { img: null, titulo: "Desierto de Atacama", pais: "Chile", glifo: "CL", ubicacion: "Región de Antofagasta, norte de Chile", epoca: "Todo el año; cielos estrellados incomparables", descripcion: "El desierto más árido del mundo: géiseres del Tatio, el Valle de la Luna y los cielos más limpios del planeta, hogar de los grandes observatorios astronómicos." },
+      ],
+    },
+  };
+
+  // Nombres de pestañas en orden
+  ordenPaises = ["japon", "corea", "chile"];
+
+  crearImg(src, alt) {
+    // La imagen se crea aquí para evitar que el navegador pida un src sin resolver
+    return React.createElement("img", { src, alt, style: { position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" } });
+  }
+
+  crearPlaceholder(titulo) {
+    // Marcador rayado para paisajes sin foto todavía
+    return React.createElement("div", { style: { position: "absolute", inset: 0, background: "repeating-linear-gradient(45deg, rgba(126,168,196,0.06), rgba(126,168,196,0.06) 14px, rgba(126,168,196,0.12) 14px, rgba(126,168,196,0.12) 28px)", display: "flex", alignItems: "center", justifyContent: "center" } },
+      React.createElement("span", { style: { fontFamily: "monospace", fontSize: "12px", letterSpacing: "0.1em", color: "#7ea8c4", textAlign: "center", padding: "0 20px" } }, "[ foto: " + titulo + " ]"));
+  }
+
+  renderVals() {
+    const { pais, seleccion } = this.state;
+    const esInicio = pais === "inicio";
+    const p = esInicio ? {} : this.paises[pais];
+
+    // Pestañas del navbar
+    const pestanas = [{ clave: "inicio", etiqueta: "Inicio" }]
+      .concat(this.ordenPaises.map((k) => ({ clave: k, etiqueta: this.paises[k].nombre })))
+      .map((t) => ({
+        ...t,
+        elegir: () => this.cambiarPais(t.clave),
+        fondo: pais === t.clave ? "#b8352b" : "rgba(12,11,14,0.35)",
+        color: pais === t.clave ? "#fff" : "#b6afa4",
+        borde: pais === t.clave ? "#b8352b" : "rgba(236,231,222,0.22)",
+      }));
+
+    // Tarjetas de acceso en Inicio
+    const accesos = this.ordenPaises.map((k) => ({
+      nombre: this.paises[k].nombre,
+      glifo: this.paises[k].glifo,
+      lema: this.paises[k].lema,
+      elegir: () => this.cambiarPais(k),
+    }));
+
+    // Paisajes del país activo, con imagen o placeholder ya resueltos
+    const paisajes = esInicio ? [] : p.paisajes.map((pj) => ({
+      ...pj,
+      imagen: pj.img ? this.crearImg(pj.img, pj.titulo) : this.crearPlaceholder(pj.titulo),
+      abrir: () => this.setState({ seleccion: pj }),
+    }));
+
+    // Cielo de fondo por país
+    const cielos = {
+      inicio: "linear-gradient(to bottom, #0c0b0e, #16121a)",
+      japon: "linear-gradient(to bottom, #120d16, #241521)",
+      corea: "linear-gradient(to bottom, #0d0f14, #1a161c)",
+      chile: "linear-gradient(to bottom, #0a0e16, #131a26)",
+    };
+
+    return {
+      canvasRef: this.canvasRef,
+      navRef: this.navRef,
+      pestanas,
+      accesos,
+      esInicio,
+      esPais: !esInicio,
+      esJapon: pais === "japon",
+      esCorea: pais === "corea",
+      esChile: pais === "chile",
+      cieloFondo: cielos[pais],
+      p: esInicio ? {} : { ...p, paisajes },
+      haySeleccion: !!seleccion,
+      sel: seleccion || {},
+      selImagen: seleccion && seleccion.img ? this.crearImg(seleccion.img, seleccion.titulo) : null,
+      cerrar: () => this.setState({ seleccion: null }),
+      detener: (e) => e.stopPropagation(),
+    };
+  }
+
+  cambiarPais(clave) {
+    this.setState({ pais: clave, seleccion: null }, () => {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      this.crearParticulas(); // regenerar partículas con el tema del país
+    });
+  }
+
+  componentDidMount() {
+    this.iniciarFondo();
+    this.iniciarNavbar();
+  }
+
+  componentWillUnmount() {
+    cancelAnimationFrame(this.raf);
+    window.removeEventListener("resize", this.onResize);
+    window.removeEventListener("scroll", this.onScroll);
+    window.removeEventListener("mousemove", this.onMouse);
+  }
+
+  // ─── Temas de partículas por país ───
+  // inicio: pétalos carmesí + brasas doradas + caligrafía
+  // japon:  pétalos de sakura rosados + nieve del Fuji
+  // corea:  faroles dorados que ascienden + pétalos rosados
+  // chile:  nieve patagónica + ráfagas de viento
+  temaParticulas() {
+    const pais = this.state.pais;
+    if (pais === "japon") return {
+      colores: ["#f2a0b5", "#e8798f"], puntos: "#ece7de", glifos: ["桜", "富", "士", "花"],
+      sube: false, viento: 0.6,
+    };
+    if (pais === "corea") return {
+      colores: ["#e5b567", "#f0cd93"], puntos: "#f2a0b5", glifos: ["한", "달", "빛", "꽃"],
+      sube: true, viento: 0.3,
+    };
+    if (pais === "chile") return {
+      colores: ["#dce8f2", "#aac4d8"], puntos: "#7ea8c4", glifos: [],
+      sube: false, viento: 1.6,
+    };
+    return {
+      colores: ["#b8352b", "#d0453a"], puntos: "#e5b567", glifos: ["桜", "月", "山", "道", "한", "달", "산", "길"],
+      sube: false, viento: 0.4,
+    };
+  }
+
+  crearParticulas() {
+    const densidad = this.props.densidadParticulas ?? 60;
+    const tema = this.temaParticulas();
+    const W = window.innerWidth, H = window.innerHeight;
+    this.parts = [];
+    for (let i = 0; i < densidad; i++) {
+      const azar = Math.random();
+      const punto = azar < 0.3;
+      const glifo = tema.glifos.length && azar > 0.9 ? tema.glifos[Math.floor(Math.random() * tema.glifos.length)] : null;
+      this.parts.push({
+        glifo,
+        tam: 18 + Math.random() * 28,
+        x: Math.random() * W,
+        y: Math.random() * H,
+        r: punto ? 1 + Math.random() * 1.8 : 2.5 + Math.random() * 4,
+        vx: (Math.random() - 0.5) * 0.35,
+        vy: (0.15 + Math.random() * 0.45) * (tema.sube ? -0.7 : 1),
+        rot: Math.random() * Math.PI * 2,
+        vr: (Math.random() - 0.5) * 0.02,
+        fase: Math.random() * Math.PI * 2,
+        punto,
+        color: punto ? tema.puntos : tema.colores[Math.floor(Math.random() * tema.colores.length)],
+        alpha: 0.25 + Math.random() * 0.45,
+      });
+    }
+    this.viento = tema.viento;
+    this.sube = tema.sube;
+  }
+
+  iniciarFondo() {
+    const canvas = this.canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    const velocidad = this.props.velocidad ?? 1;
+    let W, H;
+    const mouse = { x: -9999, y: -9999 };
+
+    const redim = () => { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; };
+    this.onResize = redim;
+    redim();
+    window.addEventListener("resize", redim);
+
+    this.onMouse = (e) => { mouse.x = e.clientX; mouse.y = e.clientY; };
+    window.addEventListener("mousemove", this.onMouse);
+
+    this.crearParticulas();
+
+    const dibujar = () => {
+      ctx.clearRect(0, 0, W, H);
+      for (const p of this.parts) {
+        p.fase += 0.008 * velocidad;
+        p.x += (p.vx + Math.sin(p.fase) * 0.3 + this.viento * 0.4) * velocidad;
+        p.y += p.vy * velocidad;
+        p.rot += p.vr * velocidad;
+
+        const dx = p.x - mouse.x, dy = p.y - mouse.y;
+        const d2 = dx * dx + dy * dy;
+        if (d2 < 14400) { const d = Math.sqrt(d2) || 1; p.x += (dx / d) * 0.8; p.y += (dy / d) * 0.8; }
+
+        if (p.y > H + 24) { p.y = -24; p.x = Math.random() * W; }
+        if (p.y < -24) { p.y = H + 24; p.x = Math.random() * W; }
+        if (p.x > W + 24) p.x = -24;
+        if (p.x < -24) p.x = W + 24;
+
+        ctx.save();
+        ctx.translate(p.x, p.y);
+        ctx.rotate(p.glifo ? Math.sin(p.fase) * 0.15 : p.rot);
+        ctx.globalAlpha = p.alpha * (0.75 + 0.25 * Math.sin(p.fase * 2));
+        if (p.glifo) {
+          ctx.globalAlpha *= 0.35;
+          ctx.fillStyle = p.color;
+          ctx.font = p.tam + "px 'Shippori Mincho', serif";
+          ctx.textAlign = "center";
+          ctx.textBaseline = "middle";
+          ctx.fillText(p.glifo, 0, 0);
+        } else if (p.punto) {
+          ctx.fillStyle = p.color;
+          ctx.beginPath();
+          ctx.arc(0, 0, p.r, 0, Math.PI * 2);
+          ctx.fill();
+        } else {
+          ctx.fillStyle = p.color;
+          ctx.beginPath();
+          ctx.ellipse(0, 0, p.r, p.r * 0.55, 0, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        ctx.restore();
+      }
+      this.raf = requestAnimationFrame(dibujar);
+    };
+    this.raf = requestAnimationFrame(dibujar);
+  }
+
+  iniciarNavbar() {
+    this.onScroll = () => {
+      const nav = this.navRef.current;
+      if (!nav) return;
+      if (window.scrollY > 40) {
+        nav.style.background = "rgba(12,11,14,0.88)";
+        nav.style.backdropFilter = "blur(12px)";
+        nav.style.boxShadow = "0 8px 30px rgba(0,0,0,0.4)";
+      } else {
+        nav.style.background = "transparent";
+        nav.style.backdropFilter = "none";
+        nav.style.boxShadow = "none";
+      }
+    };
+    window.addEventListener("scroll", this.onScroll, { passive: true });
+  }
+}
+</script>
+</body>
+</html>
