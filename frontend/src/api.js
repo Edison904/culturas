@@ -7,3 +7,16 @@ export async function obtenerPaises() {
   }
   return res.json();
 }
+
+export async function enviarMensajeChat(message, history) {
+  const res = await fetch(`${API_BASE}/api/chat/`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ message, history }),
+  });
+  const data = await res.json();
+  if (!res.ok) {
+    throw new Error(data.error || `No se pudo contactar al chatbot (${res.status})`);
+  }
+  return data.reply;
+}

@@ -10,6 +10,7 @@ import GridComidas from "./components/GridComidas";
 import GaleriaPaisajes from "./components/GaleriaPaisajes";
 import LightboxPaisaje from "./components/LightboxPaisaje";
 import Footer from "./components/Footer";
+import ChatBot from "./components/ChatBot";
 
 function Contenido() {
   const { cargando, error, paisActivo, paisDatos } = useCulturas();
@@ -48,6 +49,7 @@ function Contenido() {
 
         <LightboxPaisaje />
         <Footer />
+        <ChatBot />
       </div>
     </>
   );
