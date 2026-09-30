@@ -2,5 +2,9 @@
   "name": "culturas",
   "version": "1.0.0",
   "description": "Culturas - Landing page and chat application",
-  "private": true
+  "private": true,
+  "scripts": {
+    "build": "cd frontend && npm install && npm run build",
+    "install": "cd frontend && npm install"
+  }
 }
